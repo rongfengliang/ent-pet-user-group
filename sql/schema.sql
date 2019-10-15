@@ -1,0 +1,13 @@
+BEGIN;
+CREATE TABLE IF NOT EXISTS `groups`(`id` bigint AUTO_INCREMENT NOT NULL, `name` varchar(255) NOT NULL, `admin_id` bigint NULL, PRIMARY KEY(`id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE TABLE IF NOT EXISTS `pets`(`id` bigint AUTO_INCREMENT NOT NULL, `name` varchar(255) NOT NULL, `owner_id` bigint NULL, PRIMARY KEY(`id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE TABLE IF NOT EXISTS `users`(`id` bigint AUTO_INCREMENT NOT NULL, `age` bigint NOT NULL, `name` varchar(255) NOT NULL, PRIMARY KEY(`id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE TABLE IF NOT EXISTS `group_users`(`group_id` bigint NOT NULL, `user_id` bigint NOT NULL, PRIMARY KEY(`group_id`, `user_id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE TABLE IF NOT EXISTS `pet_friends`(`pet_id` bigint NOT NULL, `friend_id` bigint NOT NULL, PRIMARY KEY(`pet_id`, `friend_id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE TABLE IF NOT EXISTS `user_friends`(`user_id` bigint NOT NULL, `friend_id` bigint NOT NULL, PRIMARY KEY(`user_id`, `friend_id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+ALTER TABLE `groups` ADD CONSTRAINT `groups_users_admin` FOREIGN KEY(`admin_id`) REFERENCES `users`(`id`) ON DELETE SET NULL;
+ALTER TABLE `pets` ADD CONSTRAINT `pets_users_pets` FOREIGN KEY(`owner_id`) REFERENCES `users`(`id`) ON DELETE SET NULL;
+ALTER TABLE `group_users` ADD CONSTRAINT `group_users_group_id` FOREIGN KEY(`group_id`) REFERENCES `groups`(`id`) ON DELETE CASCADE, ADD CONSTRAINT `group_users_user_id` FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;
+ALTER TABLE `pet_friends` ADD CONSTRAINT `pet_friends_pet_id` FOREIGN KEY(`pet_id`) REFERENCES `pets`(`id`) ON DELETE CASCADE, ADD CONSTRAINT `pet_friends_friend_id` FOREIGN KEY(`friend_id`) REFERENCES `pets`(`id`) ON DELETE CASCADE;
+ALTER TABLE `user_friends` ADD CONSTRAINT `user_friends_user_id` FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE, ADD CONSTRAINT `user_friends_friend_id` FOREIGN KEY(`friend_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;
+COMMIT;
