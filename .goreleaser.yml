@@ -7,8 +7,43 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./ent
 builds:
-- env:
+- 
+  id: migrate
+  main: ./cmd/migration/main.go
+  binary: migrate
+  goos:
+  - linux
+  - darwin
+  - windows
+  env:
   - CGO_ENABLED=0
+- 
+  id: create
+  main: ./cmd/create/main.go
+  binary: create
+  goos:
+  - linux
+  - darwin
+  - windows
+  env:
+  - CGO_ENABLED=0
+- 
+  id: query
+  main: ./cmd/query/main.go
+  binary: query
+  goos:
+  - linux
+  - darwin
+  - windows
+  env:
+  - CGO_ENABLED=0
+- 
+  id: query2
+  main: ./cmd/query2/main.go
+  binary: query2
+  env:
+  - CGO_ENABLED=0
+
 archives:
 - replacements:
     darwin: Darwin
@@ -19,7 +54,7 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  name_template: "{{ .Tag }}-ent"
 changelog:
   sort: asc
   filters:
